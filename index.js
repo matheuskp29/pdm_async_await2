@@ -1,39 +1,67 @@
-require('dotenv').config()
-const axios = require('axios')
+//async await
 
-const { TOKEN, PROTOCOL, BASE_URL, UNITS, LANGUAGE, CNT, Q } = process.env
+function fatorial(n) {
+    if (n < 0) return Promise.reject("Valor nao pode ser negativo")
+    let res = 1
+    for(let i = 2; i < n; i++) {
+        res *= i
+    }
+    return Promise.resolve(res)
+}
 
-const url = `${PROTOCOL}://${BASE_URL}?q=${Q}&appid=${TOKEN}&lang=${LANGUAGE}&units=${UNITS}&cnt=${CNT}`
+function chamadaComThenCatch() {
+    fatorial(10)
+    .then(res => console.log(res))
+    .catch(erro => console.log(erro))
 
-axios.get(url)
-    .then(res => {
-        res.data.list.forEach(x => {
-            console.log(new Date(+(x.dt) * 1000).toLocaleString())
-            console.log('min: ', x.main.temp_min);
-            console.log('max: ', x.main.temp_max);
-            console.log('min: ', x.weather[0].description, '\n');
-        });
-    });
+    fatorial(-10)
+    .then(res => console.log(res))
+    .catch(erro => console.log(erro))
+}
 
+async function chamadaComAsyncAwait() {
+    try {
+        const f1 = await fatorial(10)
+        console.log(f1)
+        const f2 = await fatorial(-10)
+        console.log(f2)
+    } catch(e) {
+        console.log(e)
+    }
+}
 
-// dt: 1647658800,
-// main: {
-//   temp: 23.39,
-//   feels_like: 23.87,
-//   temp_min: 22.14,
-//   temp_max: 23.39,
-//   pressure: 1013,
-//   sea_level: 1013,
-//   grnd_level: 948,
-//   humidity: 80,
-//   temp_kf: 1.25
-// },
-// weather: [ [Object] ],
-// clouds: { all: 52 },
-// wind: { speed: 1.09, deg: 109, gust: 1.04 },
-// visibility: 10000,
-// pop: 0.4,
-// rain: { '3h': 0.5 },
-// sys: { pod: 'n' },
-// dt_txt: '2022-03-19 03:00:00'
+chamadaComAsyncAwait()
 
+// function hello (nome) {
+//     return new Promise(function(resolve, reject) {
+//         resolve(`Hello ${nome}`)
+//     })
+// }
+// const resultado = hello("Pedro")
+// resultado.then(res => console.log(res))
+
+// function hello (nome) {
+//     return `Hello, ${nome}`
+// }
+
+// const resultado = hello('João')
+// console.log(resultado)
+
+//-------------------------------------------------------------------
+
+// require('dotenv').config()
+// const axios = require('axios')
+
+// const { TOKEN, PROTOCOL, BASE_URL, UNITS, LANGUAGE, CNT, Q } = process.env
+
+// const url = `${PROTOCOL}://${BASE_URL}?q=${Q}&appid=${TOKEN}&lang=${LANGUAGE}&units=${UNITS}&cnt=${CNT}`
+
+// axios.get(url)
+//     .then(res => {
+//         res.data.list.forEach(x => {
+//             console.log(new Date(+(x.dt) * 1000).toLocaleString());
+//             console.log('min: ', x.main.temp_min);
+//             console.log('max: ', x.main.temp_max);
+//             console.log('min: ', x.weather[0].description, '\n');
+//         });
+//     });
